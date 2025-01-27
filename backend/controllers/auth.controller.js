@@ -77,8 +77,8 @@ export const signupUser = async (req, res) => {
 
 export const loginUser = async(req, res) => {
     try {
-        const {username, password } = req.body;
-        const user = await User.findOne({username});
+        const { username, password } = req.body;
+        const user = await User.findOne({ username });
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
         if(!user || !isPasswordCorrect) {
@@ -97,7 +97,7 @@ export const loginUser = async(req, res) => {
         });
 
     } catch (error) {
-        console.log("Error in sign up controller", error.message);
+        console.log("Error in Login User controller", error.message);
         return res.status(500).json({
             error: "Internal server error",
         })
@@ -106,7 +106,18 @@ export const loginUser = async(req, res) => {
 }
 
 export const logoutUser = (req, res) => {
-    res.send("Logout User")
-    console.log("Logout");
+    try {
+        res.cookie("jwt", "", { maxAge: 0 });
+        return res.status(200).json({
+            message: "User Logged out successfully"
+        })
+
+
+    } catch (error) {
+        console.log("Error in Logout User controller", error.message);
+        return res.status(500).json({
+            error: "Internal server error",
+        })
+    }
     
 }
