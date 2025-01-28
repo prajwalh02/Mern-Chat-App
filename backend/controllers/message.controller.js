@@ -19,7 +19,7 @@ export const sendMessage = async (req, res) => {
             })
         }
 
-        const newMessage = await Message.create({
+        const newMessage = await Message ({
             senderId,
             receiverId,
             message,
@@ -27,11 +27,11 @@ export const sendMessage = async (req, res) => {
 
         if(newMessage) {
             conversation.message.push(newMessage._id);
-            await conversation.save();
-            return res.status(201).json(newMessage);
-        }
+        } 
 
-        return res.status(400).json({message:"Error creating message"})
+        await Promise.all([ conversation.save(), newMessage.save() ]);
+        
+        return res.status(201).json(newMessage);
         
     } catch (error) {
         console.log("Error in sendMessage Controller: ", error.message);
