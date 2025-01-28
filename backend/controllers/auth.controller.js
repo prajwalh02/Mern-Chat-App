@@ -35,7 +35,7 @@ export const signupUser = async (req, res) => {
         }
 
         // Hash the  password 
-        const hashedPassword = await bcrypt.hash("password", 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // https://avatar-placeholder.iran.liara.run/ -> profile pic/avatar
         const profilePic = `https://avatar.iran.liara.run/public/${gender == "male" ? "boy" : "girl"}?username=${username}`;
@@ -80,6 +80,8 @@ export const loginUser = async(req, res) => {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+
+        console.log(user, isPasswordCorrect, password);
 
         if(!user || !isPasswordCorrect) {
             return res.status(400).json({
