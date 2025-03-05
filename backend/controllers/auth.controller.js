@@ -111,8 +111,6 @@ export const logoutUser = (req, res) => {
         return res.status(200).json({
             message: "User Logged out successfully"
         })
-
-
     } catch (error) {
         console.log("Error in Logout User controller", error.message);
         return res.status(500).json({
