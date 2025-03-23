@@ -13,4 +13,16 @@ export const getUserForSidebar = async (req, res) => {
         console.log("Error in getUserForSidebar: ", error);
         return res.status(500).json({error: "Internal Server Error"});
     }
+};
+
+export const getAllUsers = async(req, res) => {
+    try { 
+        const users = await User.find({});
+        return res.status(200).json(users);
+
+    } catch {
+        console.log("Errors fetching users");
+        return res.status(500).json({error: "Server error"})
+        
+    }
 }

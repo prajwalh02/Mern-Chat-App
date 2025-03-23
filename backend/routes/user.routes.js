@@ -1,9 +1,14 @@
-import express from 'express';
+import { Router } from 'express'
 import { protectRoute } from '../middleware/protectRoute.js';
-import { getUserForSidebar } from '../controllers/user.controller.js';
+import { getAllUsers, getUserForSidebar } from '../controllers/user.controller.js';
 
-const router = express.Router();
+const userRouter = Router();
 
-router.get("/", protectRoute, getUserForSidebar)
+userRouter.get("/", protectRoute, getUserForSidebar)
 
-export default router;
+userRouter.get("/all", getAllUsers);
+
+userRouter.post('')
+
+
+export default userRouter;
