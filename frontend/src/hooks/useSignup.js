@@ -1,26 +1,27 @@
 import { useState } from "react"
-import toast from "react-hot-toast";
+import axios from "axios";
+import { BASE_URL } from "../constants";
+import { useAuthContext } from "../context/AuthContext";
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
+    const { setAuthUser } = useAuthContext();
 
   const signup = async(signupData) => {
-    const success = handleInputErrors(signupData);
-    if(!success) return;
 
     setLoading(true);
     try {
-        const res = await fetch("http://localhost:5000/api/auth/signup", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(signupData),
-        })
+        const { data } = await axios.post(`${BASE_URL}/api/auth/signup`, signupData)
+        // console.log(data);
 
-        const data = await res.json();
-        console.log(data);
-        
+        // localStorage
+        localStorage.setItem("chat-user", JSON.stringify(data));
+        // context
+        setAuthUser(data);
+        return data
     } catch (error) {
-        toast.error(error.message);
+        console.log(error);
+        throw error;
     } finally {
         setLoading(false);
     }
@@ -30,20 +31,17 @@ const useSignup = () => {
 
 export default useSignup
 
-const handleInputErrors = ({fullName, username, password, confirmPassword, gender}) => {
+export const handleInputErrors = ({fullName, username, password, confirmPassword, gender}) => {
     if(!fullName || !username || !password || !confirmPassword || !gender) {
-        toast.error("Please fill in all fields");
-        return false;
+        throw new Error("Please fill in all fields");
     }
 
     if(password !== confirmPassword) {
-        toast.error("Passwords do not match");
-        return false;
+        throw new Error("Passwords do not match");
     }
 
     if(password.length < 6) {
-        toast.error("Password must be at least 6 characters long");
+        throw new Error("Password must be at least 6 characters long");
     }
 
-    return true;
 }

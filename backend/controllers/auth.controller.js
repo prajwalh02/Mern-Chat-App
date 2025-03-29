@@ -9,19 +9,19 @@ export const signupUser = async (req, res) => {
         // Validate input
         if (!fullName || !username || !password || !confirmPassword || !gender) {
             return res.status(400).json({
-                error: "All fields are required",
+                error: {message: "All fields are required"},
             });
         }
 
         if(!["male", "female"].includes(gender)) {
             return res.status(400).json({
-                error: "Gender must be 'male' or 'female'",
+                error: {message: "Gender must be 'male' or 'female'"},
             });
         } 
 
         if(password !== confirmPassword) {
             return res.status(400).json({
-                error: "Password Do not match"
+                error: {message: "Password Do not match"}
             })
         }
         
@@ -30,7 +30,7 @@ export const signupUser = async (req, res) => {
 
         if(user) {
             return res.status(400).json({
-                error: "Username already exists"
+                error: {message: "Username already exists"}
             })
         }
 

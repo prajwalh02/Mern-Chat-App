@@ -1,31 +1,53 @@
 import { Link } from "react-router-dom";
 import GenderCheckbox from "./GenderCheckbox";
 import { useState } from "react";
-import useSignup from "../../hooks/useSignup";
+import useSignup, { handleInputErrors } from "../../hooks/useSignup";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
+const formInitialState = {
+  fullName: "",
+  username: "",
+  password: "",
+  confirmPassword: "",
+  gender: "",
+}
 
 const SignUp = () => {
-  const [inputs, setInputs] = useState({
-    fullName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-    gender: "",
-  });
+  const [inputs, setInputs] = useState(formInitialState);
+  const navigate = useNavigate();
+
 
   const {loading, signup} = useSignup()
 
-  const handleCheckboxChange = (gender) => {
-    setInputs({...inputs, gender})
+  const handleFormData = (key, value) => {
+    setInputs({...inputs, [key]: value})
   }
 
-  // const handleFormData = (key, value) => {
-  //   setInputs({...inputs, [key]: value})
-  // }
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await signup(inputs);
+    try {
+      e.preventDefault();
+      // error handling
+      handleInputErrors(inputs);
+      // call signup api
+      const response = await signup(inputs);
+      console.log(response);
+      if(!response.error) {
+        toast.success("Sign up Successfull");
+        // navigate to home page
+        navigate("/");
+      } else throw response.error
+    } catch (error) {
+       toast.error(error.message)
+    } finally{
+       resetForm()
+    }
+    
   };
+
+  const resetForm = () =>{
+    setInputs(formInitialState)
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
@@ -45,9 +67,7 @@ const SignUp = () => {
               placeholder="John Doe"
               className="w-full input input-bordered h-10"
               value={inputs.fullName}
-              onChange={(e) =>
-                setInputs({ ...inputs, fullName: e.target.value })
-              }
+              onChange={(e) => handleFormData("fullName", e.target.value)}
             />
           </div>
 
@@ -60,9 +80,7 @@ const SignUp = () => {
               placeholder="johndoe"
               className="w-full input input-bordered h-10"
               value={inputs.username}
-              onChange={(e) =>
-                setInputs({ ...inputs, username: e.target.value })
-              }
+              onChange={(e) => handleFormData("username", e.target.value)}
             />
           </div>
 
@@ -71,13 +89,11 @@ const SignUp = () => {
               <span className="text-base label-text text-white">Password</span>
             </label>
             <input
-              type="text"
+              type="password"
               placeholder="Enter Password"
               className="w-full input input-bordered h-10"
               value={inputs.password}
-              onChange={(e) =>
-                setInputs({ ...inputs, password: e.target.value })
-              }
+              onChange={(e) => handleFormData("password", e.target.value)}
             />
           </div>
 
@@ -88,17 +104,15 @@ const SignUp = () => {
               </span>
             </label>
             <input
-              type="text"
+              type="password"
               placeholder="Confirm Password"
               className="w-full input input-bordered h-10"
               value={inputs.confirmPassword}
-              onChange={(e) =>
-                setInputs({ ...inputs, confirmPassword: e.target.value })
-              }
+              onChange={(e) => handleFormData("confirmPassword", e.target.value)}
             />
           </div>
 
-          <GenderCheckbox onCheckboxChange = {handleCheckboxChange} selectedGender={inputs.gender} />
+          <GenderCheckbox onCheckboxChange = {handleFormData} selectedGender={inputs.gender} />
 
           <Link
             to="/login"
@@ -108,8 +122,8 @@ const SignUp = () => {
           </Link>
 
           <div>
-            <button className="btn btn-sm btn-block mt-2 border border-slate-700 hover:bg-blue-600 hover:text-white">
-              Sign Up
+            <button className={`btn btn-sm btn-block mt-2 border border-slate-700 hover:text-white ${!loading ? "hover:bg-blue-600" : ""}`}>
+              {loading ? <div className="loader"></div> : "Sign Up" }
             </button>
           </div>
         </form>
