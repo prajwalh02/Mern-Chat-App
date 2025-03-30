@@ -45,7 +45,7 @@ const SignUp = () => {
     
   };
 
-  const resetForm = () =>{
+  const resetForm = () => {
     setInputs(formInitialState)
   }
 
@@ -123,7 +123,7 @@ const SignUp = () => {
 
           <div>
             <button className={`btn btn-sm btn-block mt-2 border border-slate-700 hover:text-white ${!loading ? "hover:bg-blue-600" : ""}`}>
-              {loading ? <div className="loader"></div> : "Sign Up" }
+              {loading ? <div className="loading loading-spinner"></div> : "Sign Up" }
             </button>
           </div>
         </form>

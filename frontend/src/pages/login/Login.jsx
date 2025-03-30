@@ -21,7 +21,7 @@ const Login = () => {
             <label className="label p-2">
               <span className="text-base label-text text-white ">Password</span>
             </label>
-            <input type="text" placeholder="Enter Password" className="w-full input input-bordered h-10" />
+            <input type="password" placeholder="Enter Password" className="w-full input input-bordered h-10" />
           </div>
 
           <Link to="/signup" className="text-sm hover:underline hover:text-blue-500 mt-2 inline-block text-white">

@@ -5,20 +5,21 @@ import { useAuthContext } from "../context/AuthContext";
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
-    const { setAuthUser } = useAuthContext();
+  const { setAuthUser } = useAuthContext();
 
   const signup = async(signupData) => {
 
     setLoading(true);
     try {
         const { data } = await axios.post(`${BASE_URL}/api/auth/signup`, signupData)
-        // console.log(data);
 
         // localStorage
         localStorage.setItem("chat-user", JSON.stringify(data));
         // context
-        setAuthUser(data);
-        return data
+        if(!data.error) {
+          setAuthUser(data);
+          return data;
+        } else throw data.error;
     } catch (error) {
         console.log(error);
         throw error;
