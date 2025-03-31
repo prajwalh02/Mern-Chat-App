@@ -11,8 +11,10 @@ const useSignup = () => {
 
     setLoading(true);
     try {
-        const { data } = await axios.post(`${BASE_URL}/api/auth/signup`, signupData)
-
+        const data = await axios.post(`${BASE_URL}/api/auth/signup`, signupData)
+        if(data.error) {
+            throw new Error(data.error);
+        }
         // localStorage
         localStorage.setItem("chat-user", JSON.stringify(data));
         // context
@@ -44,5 +46,4 @@ export const handleInputErrors = ({fullName, username, password, confirmPassword
     if(password.length < 6) {
         throw new Error("Password must be at least 6 characters long");
     }
-
 }

@@ -17,7 +17,6 @@ const SignUp = () => {
   const [inputs, setInputs] = useState(formInitialState);
   const navigate = useNavigate();
 
-
   const {loading, signup} = useSignup()
 
   const handleFormData = (key, value) => {
