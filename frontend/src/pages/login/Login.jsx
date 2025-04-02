@@ -3,7 +3,6 @@ import { useState } from "react";
 import useLogin from "../../hooks/useLogin";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { handleInputErrors } from "../../hooks/useLogin";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -14,15 +13,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      handleInputErrors({username, password});
-      const response = await login(username, password);
-      if(!response.error.message) {
-        toast.success("Login Successfull");
+      const data = await login(username, password);
+      if(!data.error) {
+        toast.success("Login Successful");
         // navigate to home page
         navigate("/");
-      } else throw response.error.message 
+      } else throw data.error 
     } catch (error) {
       toast.error(error.message);
+      console.log(error);
     }
   };
 

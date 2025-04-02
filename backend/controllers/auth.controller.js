@@ -82,21 +82,21 @@ export const loginUser = async(req, res) => {
         // Check if username is provided
         if (!username || !password) {
             return res.status(400).json({
-                error: { message: "Username and password are required" }
+                error: { message: "Username and Password are required" }
             });
         }
 
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({
-                error: { message: "Invalid credentials" }
+                error: { message: "Invalid Username or Password" }
             });
         }       
                 
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
         if (!isPasswordCorrect) {
             return res.status(400).json({
-                error: { message: "Invalid credentials" }
+                error: { message: "Invalid Username or Password" }
             });
         }
         

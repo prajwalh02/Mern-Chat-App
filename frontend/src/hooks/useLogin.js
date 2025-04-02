@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { useAuthContext } from "../context/AuthContext";
-import toast from "react-hot-toast";
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -10,23 +9,23 @@ const useLogin = () => {
 
   const login = async (username, password) => {
     try {
-    //   handleInputErrors({username, password});
       setLoading(true);
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
+      const { data } = await axios.post(`${BASE_URL}/api/auth/login`, {
         username,
         password,
       });
 
-      if (res.error) {
-        throw new Error(res.error.message);
+      if (data.error) {
+        throw new Error(data.error);
       }
 
-      localStorage.setItem("chat-user", JSON.stringify(res));
-      setAuthUser(res);
+      localStorage.setItem("chat-user", JSON.stringify(data));
+      setAuthUser(data);
 
-      return res;
+      return data;
     } catch (error) {
-      toast.error(error.message);
+        console.log(error);
+        throw error.response.data.error;
     } finally {
       setLoading(false);
     }
