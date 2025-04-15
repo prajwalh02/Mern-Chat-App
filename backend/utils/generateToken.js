@@ -11,6 +11,8 @@ const generateTokenAndSetCookie = (userId, res) => {
         sameSite: "strict",               // Ensures the cookie is only sent to the same site
         secure: process.env.NODE_ENV !== "development", // Ensures the cookie is sent over HTTPS in production
     });
+
+    return token;
     
 }
 

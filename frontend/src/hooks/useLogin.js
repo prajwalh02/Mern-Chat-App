@@ -10,11 +10,14 @@ const useLogin = () => {
   const login = async (username, password) => {
     try {
       setLoading(true);
-      const { data } = await axios.post(`${BASE_URL}/api/auth/login`, {
+      const response = await axios.post(`${BASE_URL}/api/auth/login`, {
         username,
         password,
       });
+      console.log("RESPONSE: ", response);
+      
 
+      const data = response.data;
       if (data.error) {
         throw new Error(data.error);
       }

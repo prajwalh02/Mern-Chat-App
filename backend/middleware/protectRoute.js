@@ -4,14 +4,15 @@ import User from '../models/user.model.js';
 // Middleware to protect routes by verifying the user's JWT and attaching user information to the request
 export const protectRoute = async (req, res, next) => {
     try {
-        
         // Step 1: Extract the JWT token from the request cookies
-        const token = req.cookies.jwt;
-
+        const token = req.headers['authorization'].split(" ")[1];
+        
         // Step 2: Check if the token exists
         if(!token) {
             return res.status(401).json({
-                error: "Unauthorized: No token provided"
+                error: {
+                    message: "Unauthorized: No token provided"
+                }
             });
         }
 
@@ -21,7 +22,9 @@ export const protectRoute = async (req, res, next) => {
         // Step 4: Check if the token could not be decoded (e.g., invalid or expired)
         if(!decoded) {
             return res.status(401).json({
-                error: "Unauthorized: Invalid token"
+                error: {
+                    message: "Unauthorized: Invalid token"
+                }
             });
         }
 
@@ -30,7 +33,9 @@ export const protectRoute = async (req, res, next) => {
         
         if(!user) {
             return res.status(404).json({
-                error: "User not found"
+                error: {
+                    message: "User not found"
+                }
             });
         }
 
@@ -42,7 +47,9 @@ export const protectRoute = async (req, res, next) => {
     } catch (error) {
         console.log("Error in protectRoute Middleware: ", error.message);
         return res.status(500).json({
-            error: "Internal Server Error"
+            error: {
+                message: "Internal Server Error"
+            }
         })
     }
 }
