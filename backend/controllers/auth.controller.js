@@ -52,6 +52,7 @@ export const signupUser = async (req, res) => {
             // Generate JWT token here
             await generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
+            const token = generateTokenAndSetCookie(newUser._id, res);
 
             return res.status(201).json({
                 _id: newUser._id,
@@ -59,6 +60,7 @@ export const signupUser = async (req, res) => {
                 username: newUser.username,
                 profilePic: newUser.profilePic,
                 gender: newUser.gender,
+                token,
             })
         } else {
             return res.status(400).json({

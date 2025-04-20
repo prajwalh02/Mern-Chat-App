@@ -41,7 +41,7 @@ export const protectRoute = async (req, res, next) => {
 
         // Step 6: Attach the user's information to the `req` object for downstream handlers to use
         req.user = user;
-
+        
         next();
 
     } catch (error) {

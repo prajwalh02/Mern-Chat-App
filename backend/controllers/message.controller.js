@@ -4,6 +4,7 @@ import Message from "../models/message.model.js";
 // Controller to handle sending messages
 export const sendMessage = async (req, res) => {
     try {
+        
         const { message } = req.body; // Extract message from request body
         const { id: receiverId } = req.params; // Extract receiver ID from route parameters
         const senderId = req.user._id; // Extract sender ID from authenticated user
@@ -30,7 +31,7 @@ export const sendMessage = async (req, res) => {
         } 
 
         // TODO: socket IO functionality will go here
-
+ 
         await Promise.all([ conversation.save(), newMessage.save() ]);
         
         return res.status(201).json(newMessage);
@@ -67,3 +68,5 @@ export const getMessage = async (req, res) => {
         });
     }
 }
+
+

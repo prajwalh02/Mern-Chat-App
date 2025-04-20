@@ -3,42 +3,40 @@ import axios from "axios";
 import { BASE_URL } from "../constants";
 import { toast } from "react-hot-toast";
 
-
 const useGetConversation = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversation] = useState([]);
 
   useEffect(() => {
     const getConversations = async () => {
-        try {
-          const {token} = JSON.parse(localStorage.getItem("chat-user"));
-          setLoading(true);
-          if(!token) {
-              throw new Error("No token found");
-          }
-          const {data} = await axios.get(`${BASE_URL}/api/users`, {
-              headers: {
-                  Authorization: `Bearer ${token}`
-              }
-          })    
+      try {
+        const { token } = JSON.parse(localStorage.getItem("chat-user"));
+        setLoading(true);
+        if (!token) {
+          throw new Error("No token found");
+        }
+        const { data } = await axios.get(`${BASE_URL}/api/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-          if (data.error) {
-              throw new Error(data.error);
-          }
+        if (data.error) {
+          throw new Error(data.error);
+        }
 
-          setConversation(data);
+        setConversation(data);
       } catch (error) {
-          console.log("ERROR MESSAGE: ", error.response.data.error.message);
-          toast.error(error.response.data.error.message);
+        console.log("ERROR MESSAGE: ", error.response.data.error.message);
+        toast.error(error.response.data.error.message);
       } finally {
         setLoading(false);
       }
-  }   
-  getConversations();
+    };
+    getConversations();
+  }, []);
 
-}, [])
+  return { loading, conversations };
+};
 
-  return { loading,conversations }
-}
-
-export default useGetConversation
+export default useGetConversation;
