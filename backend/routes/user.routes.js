@@ -10,5 +10,6 @@ userRouter.get("/all", getAllUsers);
 
 userRouter.post('')
 
+userRouter.post("/cleardb")
 
 export default userRouter;

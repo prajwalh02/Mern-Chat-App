@@ -31,7 +31,7 @@ const Message = ({ data }) => {
       </div>
 
       {/* Message Content */}
-      <div className={`chat-bubble text-white ${bubbleBgColor}`}>{message}</div>
+      <div className={`chat-bubble text-white ${bubbleBgColor} `}>{message}</div>
       <div className="text-xs text-gray-100 mt-1 pr-1">{timeStamp}</div>
 
     </div>

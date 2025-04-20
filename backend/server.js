@@ -2,11 +2,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
 
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import clearRoutes from "./routes/clear.routes.js";
 
 import connectToMongoDb from "./db/connectToMongoDb.js";
 
@@ -23,29 +23,11 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/clear", clearRoutes);
 
 app.get("/", (req, res) => {
-  // root route http://localhost:000/
+  // root route http://localhost:8000/
   res.send("Hello, World!");
-});
-
-// drop db
-app.post("/cleardb", async (req, res) => {
-  try {
-    await connectToMongoDb(); // ensure connection is established
-
-    if (mongoose.connection.readyState === 1) {
-      await mongoose.connection.db.dropDatabase();
-      res.status(200).json({ message: "Database dropped successfully" });
-    } else {
-      res.status(500).json({ message: "Database not connected" });
-    }
-  } catch (error) {
-    console.error("Error dropping database:", error.message);
-    res
-      .status(500)
-      .json({ message: "Failed to drop database", error: error.message });
-  }
 });
 
 app.listen(PORT, () => {

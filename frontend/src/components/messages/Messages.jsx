@@ -1,16 +1,20 @@
+import useConversation from "../../zustand/useConversation";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
 import { useEffect, useRef } from "react";
 
 const Messages = ({ messages, loading }) => {
+  const { selectedConversation } = useConversation();
   
   const messagesRef = useRef();
 
   useEffect(() => {
     if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      setTimeout(() => {
+        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      }, 100);
     }
-  }, [messages]);
+  }, [ messages, selectedConversation ]);
 
   return (
     <div className="px-4 flex-1 overflow-auto" ref={messagesRef}>
