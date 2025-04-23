@@ -1,3 +1,4 @@
+import useListenMessage from "../../hooks/useListenMessage";
 import useConversation from "../../zustand/useConversation";
 import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
@@ -5,6 +6,7 @@ import { useEffect, useRef } from "react";
 
 const Messages = ({ messages, loading }) => {
   const { selectedConversation } = useConversation();
+  useListenMessage();
   
   const messagesRef = useRef();
 

@@ -10,6 +10,7 @@ const Message = ({ data }) => {
   const chatClassName = isMe ? "chat-end" : "chat-start";
   const profilePic  = isMe ? authUser.profilePic : selectedConversation?.profilePic;
   const bubbleBgColor = isMe ? 'bg-blue-500' : "";
+  const shakeClass = data.shouldShake ? "shake" : "";
 
   const timeStamp = new Date(createdAt).toLocaleTimeString([], {
     hour: '2-digit',
@@ -28,10 +29,10 @@ const Message = ({ data }) => {
             className="object-cover w-full h-full"
           />
         </div>
-      </div>
+      </div> 
 
       {/* Message Content */}
-      <div className={`chat-bubble text-white ${bubbleBgColor} `}>{message}</div>
+      <div className={`chat-bubble text-white ${bubbleBgColor} ${shakeClass} `}>{message}</div>
       <div className="text-xs text-gray-100 mt-1 pr-1">{timeStamp}</div>
 
     </div>
