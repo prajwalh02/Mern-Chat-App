@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -15,6 +16,8 @@ import { app, server } from "./socket/socket.js";
 dotenv.config();
 const PORT = process.env.PORT;
 
+const __dirname = path.resolve();
+
 // Load environment variables from .env file
 app.use(cors());
 app.use(express.json()); // to parse the incoming requests with JSON payloads (from req.body)
@@ -25,6 +28,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/clear", clearRoutes);
+
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"))
+})
 
 app.get("/", (req, res) => {
   // root route http://localhost:8000/

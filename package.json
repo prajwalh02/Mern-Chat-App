@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon backend/server.js",
-    "client": "cd frontend && npm run dev",
-    "dev": "concurrently \"npm run server\" \"npm run client\""  
+    "start": "node backend/server.js",
+    "build": "npm install && npm install --prefix frontend &&  npm run build --prefix frontend"
   },
   "type": "module",
   "keywords": [],
