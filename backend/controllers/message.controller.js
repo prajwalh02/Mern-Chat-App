@@ -5,7 +5,6 @@ import { getReceiverSocketId, io } from "../socket/socket.js";
 // Controller to handle sending messages
 export const sendMessage = async (req, res) => {
     try {
-        
         const { message } = req.body; // Extract message from request body
         const { id: receiverId } = req.params; // Extract receiver ID from route parameters
         const senderId = req.user._id; // Extract sender ID from authenticated user
@@ -33,7 +32,7 @@ export const sendMessage = async (req, res) => {
 
         await Promise.all([ conversation.save(), newMessage.save() ]);
 
-        // TODO: socket IO functionality will go here
+        // socket IO functionality
         const receiverSocketId = getReceiverSocketId(receiverId);
         if(receiverSocketId) {
             // io.to(<socketId>).emit() used to send event to specific client
