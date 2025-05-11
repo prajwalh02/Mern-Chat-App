@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // Initialize a new Socket.IO server with CORS configuration
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173"],  // Allow frontend origin
+        origin: ["https://mern-chat-app-yo29.onrender.com/"],  // Allow frontend origin
         methods: ["GET", "POST"],
     }
 });
