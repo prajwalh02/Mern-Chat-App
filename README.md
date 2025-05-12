@@ -2,6 +2,8 @@
 
 A full-stack realtime chat application built with the MERN stack, enhanced with Socket.io for live messaging, TailwindCSS for modern styling, and Zustand for global state management.
 
+🚀 **Live Demo**: [Click here to try it out](https://mern-chat-app-yo29.onrender.com)
+
 ## 🚀 Tech Stack
 
 - **Frontend**: React, TailwindCSS, DaisyUI, Zustand
